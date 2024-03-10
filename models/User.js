@@ -14,10 +14,10 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    products: [{
-        type: Types.ObjectId,
+    products: {
+        type: Array,
         ref: 'Product'
-    }]
+    }
 })
 
 module.exports = model('User', schema)

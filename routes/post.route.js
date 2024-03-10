@@ -96,16 +96,18 @@ router.get('/product/:id', async (req, res) => {
 router.post('/addtobag/', verifyToken, async (req, res) => {
     try {
         const userId = req.user._id
-        const doc = req.body._id
+        const doc = req.body
+        // const size = req.body.selectedSize
+        // console.log(size)
 
-        const product = await Product.findById(doc)
+        // const product = await Product.findById(doc)
         const userData = await User.findById(userId)
 
         await User.findByIdAndUpdate(userId, {
-            products: [...userData.products, product]
+            products: [...userData.products, doc]
         })
 
-        res.status(200).json({ message: 'Товар добавлен в корзину', product })
+        res.status(200).json({ message: 'Товар добавлен в корзину', doc })
 
     } catch (error) {
         console.log(error)
@@ -118,8 +120,10 @@ router.post('/addtobag/', verifyToken, async (req, res) => {
 router.get('/cart', verifyToken, async (req, res) => {
     try {
 
-        const products = await Product.find({ _id: { $in: req.user.products } });
-        res.json(products)
+        // const products = await Product.find({ _id: { $in: req.user.products } });
+        // res.json(products)
+        const user = await User.findById(req.user._id)
+        res.json(user.products)
 
     } catch (error) {
         console.log(error)
@@ -139,10 +143,10 @@ router.delete('/cart/remove/:id', verifyToken, async (req, res) => {
         const user = await User.findById(userId)
 
         const newProducts = user.products.filter((product) => {
-            return String(productId) !== String(product)
+            return String(productId) !== String(product._id)
         })
 
-        console.log(newProducts)
+        // console.log(newProducts)
 
         await User.findByIdAndUpdate(userId, { products: newProducts })
 

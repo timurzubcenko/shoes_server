@@ -32,6 +32,13 @@ const schema = new Schema({
     selectedSize: {
         type: String,
     },
+    amount: {
+        type: Number,
+    },
+    gender: {
+        type: String,
+        required: true
+    },
     img1: {
         type: String,
     },

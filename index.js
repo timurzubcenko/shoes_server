@@ -36,6 +36,7 @@ app.use('/api/auth', require('./routes/auth.route'))
 app.use('/api/authusers', require('./routes/auth_users.route'))
 app.use('/api/products', require('./routes/post.route'))
 app.use('/api/clients', require('./routes/client.route'))
+app.use('/api/order', require('./routes/order.route'))
 
 async function start() {
     try {

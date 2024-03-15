@@ -5,6 +5,7 @@ const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const jwtToken = require('jsonwebtoken')
+const { verifyToken } = require('../middleware/auth.middleware.js')
 
 router.post('/register', async (req, res) => {
     try {
@@ -60,6 +61,10 @@ router.post('/login', async (req, res) => {
     } catch (error) {
         console.error(error)
     }
+})
+
+router.get('/', verifyToken, async (req, res) => {
+    res.status(200).json({ msg: 'Авторизован' })
 })
 
 module.exports = router

@@ -18,6 +18,7 @@ router.post('/create', async (req, res) => {
             img2: req.body.img2,
             img3: req.body.img3,
             img4: req.body.img4,
+            gender: req.body.gender
         })
 
         const product = await doc.save()

@@ -14,6 +14,11 @@ const schema = new Schema({
         type: String,
         required: true
     },
+    number: {
+        type: String,
+        required: true,
+        default: ''
+    },
     user: {
         type: Types.ObjectId,
         ref: 'User',

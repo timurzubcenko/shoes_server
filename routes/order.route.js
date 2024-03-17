@@ -9,6 +9,7 @@ router.post('/create', verifyToken, async (req, res) => {
             email: req.user.email,
             name: req.user.name,
             surname: req.body.surname,
+            number: req.body.number,
             products: req.user.products,
             user: req.user._id,
             totalPrice: req.body.totalPrice,

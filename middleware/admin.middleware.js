@@ -20,7 +20,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
         }
     }
     if (!token) {
-        res.status(401).json({ message: "User not authorized" });
+        res.status(401).json({ message: "Admin not authorized" });
     }
 });
 

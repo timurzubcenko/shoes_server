@@ -162,4 +162,76 @@ router.delete('/cart/remove/:id', verifyToken, async (req, res) => {
     }
 })
 
+router.patch('/cart/change/increase/:id', verifyToken, async (req, res) => {
+    try {
+
+        const productId = req.params.id
+        const userId = req.user._id
+
+        const user = await User.findById(userId)
+        const product = await Product.findById(productId)
+
+        if (!user) {
+            return res.status(404).json({ message: "Пользователь не найден" });
+        }
+
+        const productIndex = user.products.findIndex(product => product._id == productId)
+
+        if (productIndex === -1) {
+            return res.status(404).json({ message: "Продукт не найден" });
+        }
+
+        user.products[productIndex].amount += 1
+        user.products[productIndex].price = user.products[productIndex].amount * product.price
+
+        await user.markModified('products');
+        await user.save();
+
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.log(error)
+        res.json({
+            message: 'Не удалось обновить продукт'
+        })
+    }
+})
+
+router.patch('/cart/change/decrease/:id', verifyToken, async (req, res) => {
+    try {
+
+        const productId = req.params.id
+        const userId = req.user._id
+
+        const user = await User.findById(userId)
+        const product = await Product.findById(productId)
+
+        if (!user) {
+            return res.status(404).json({ message: "Пользователь не найден" });
+        }
+
+        const productIndex = user.products.findIndex(product => product._id == productId)
+
+        if (productIndex === -1) {
+            return res.status(404).json({ message: "Продукт не найден" });
+        }
+
+        if (user.products[productIndex].amount > 1) {
+            user.products[productIndex].amount -= 1
+        }
+        user.products[productIndex].price = user.products[productIndex].amount * product.price
+
+        await user.markModified('products');
+        await user.save();
+
+        res.status(200).json(user);
+
+    } catch (error) {
+        console.log(error)
+        res.json({
+            message: 'Не удалось обновить продукт'
+        })
+    }
+})
+
 module.exports = router
